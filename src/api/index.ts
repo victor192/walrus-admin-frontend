@@ -1,7 +1,5 @@
-import Auth from './services/auth'
-import Users from './services/users'
+import Auth from "./services/auth";
+import Users from "./services/users";
+import Clubs from "./services/clubs";
 
-export {
-    Auth,
-    Users
-}
+export { Auth, Users, Clubs };

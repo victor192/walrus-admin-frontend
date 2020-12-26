@@ -1,48 +1,54 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { BASE_URL } from "@/config/api";
-import store from '@/store'
-import qs from 'qs'
+import store from "@/store";
+import qs from "qs";
 
 const axiosService: AxiosInstance = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000
-})
+  baseURL: BASE_URL,
+  timeout: 10000
+});
 
 axiosService.interceptors.request.use(
-    request => {
-        if (store.state.auth.loggedIn) {
-            request.headers['Authorization'] = store.state.auth.token
-        }
-
-        if (request.data && request.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
-            request.data = qs.stringify(request.data)
-        }
-
-        return request
-    },
-    error => {
-        return Promise.reject(error)
+  request => {
+    if (store.state.auth.loggedIn) {
+      request.headers["Authorization"] = store.state.auth.token;
     }
-)
 
-const request = (config: AxiosRequestConfig, raw: boolean = false): Promise<any> => {
-    return axiosService.request(config)
-        .then((response) => {
-            return raw ? response : response.data
-        })
-        .catch((error) => {
-            if (error.response) {
-                const {data, status, headers} = error.response
+    if (
+      request.data &&
+      request.headers["Content-Type"] === "application/x-www-form-urlencoded"
+    ) {
+      request.data = qs.stringify(request.data);
+    }
 
-                return raw ? { error: 'response', data, status, headers } : data
-            }
-            else if (error.request) {
-                return raw ? { error: 'no_response', data: error.request} : error.request
-            }
-            else {
-                return raw ? { error: 'custom', message: error.message} : error.message
-            }
-        })
-}
+    return request;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
-export { axiosService, request }
+const request = (config: AxiosRequestConfig, raw = false): Promise<any> => {
+  return axiosService
+    .request(config)
+    .then(response => {
+      return raw ? response : response.data;
+    })
+    .catch(error => {
+      if (error.response) {
+        const { data, status, headers } = error.response;
+
+        return raw ? { error: "response", data, status, headers } : data;
+      } else if (error.request) {
+        return raw
+          ? { error: "no_response", data: error.request }
+          : error.request;
+      } else {
+        return raw
+          ? { error: "custom", message: error.message }
+          : error.message;
+      }
+    });
+};
+
+export { axiosService, request };

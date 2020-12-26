@@ -1,1 +1,1 @@
-export const TOKEN_KEY_NAME: string = 'user_token'
+export const TOKEN_KEY_NAME = "user_token";
