@@ -38,6 +38,18 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Список клубов моржей"
         }
+      },
+      {
+        path: "/clubs/:id",
+        name: "clubs-club",
+        component: () =>
+          import(
+            /* webpackChunkName: "clubs-club" */ "../views/Clubs/Club.vue"
+          ),
+        meta: {
+          title: "Информация о клубе",
+          backLink: true
+        }
       }
     ]
   }

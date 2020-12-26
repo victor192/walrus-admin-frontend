@@ -11,9 +11,10 @@
         <router-link :to="clubLink(item.id)">{{ item.name }}</router-link>
       </template>
     </v-data-table>
-    <v-btn color="green" dark fixed bottom right fab>
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
+    <create-club />
+    <v-snackbar v-model="isCreatedNewClub" color="green">
+      Клуб успешно создан
+    </v-snackbar>
     <v-snackbar v-model="isFetchError">
       Ошибка при загрузке данных клубов
     </v-snackbar>
@@ -23,14 +24,17 @@
 <script lang="ts">
 import Vue from "vue";
 import { clubsMapper } from "@/store/modules/clubs";
+import CreateClub from "./List/Create.vue";
 
 export default Vue.extend({
   name: "ClubsList",
+  components: { CreateClub },
   data() {
     return {
       currentPage: 1,
       isLoading: true,
       isFetchError: false,
+      isCreatedNewClub: false,
       clubsOptions: {},
       clubsHeaders: [
         {
@@ -54,13 +58,23 @@ export default Vue.extend({
   watch: {
     clubsOptions: {
       handler(val) {
-        const { page, itemsPerPage: limit } = val;
+        const { page, itemsPerPage: limit, sortBy, sortDesc } = val;
         const offset = (page - 1) * limit;
+
+        if (sortBy.length === 1 && sortDesc.length === 1) {
+          const sort = sortBy[0];
+          const direction = sortDesc[0] ? "desc" : "asc";
+
+          this.setSort({ sort, direction });
+        }
 
         this.fetchClubsList(limit, offset);
       },
       deep: true
     }
+  },
+  mounted() {
+    this.$root.$on("onCreatedNewClub", this.handleCreateClub);
   },
   computed: {
     ...clubsMapper.mapGetters(["isClubs"]),
@@ -68,11 +82,13 @@ export default Vue.extend({
       clubsList: state => state.list,
       clubsLimit: state => state.limit,
       clubsOffset: state => state.offset,
-      clubsTotal: state => state.total
+      clubsTotal: state => state.total,
+      clubsSort: state => state.sort,
+      clubsDirection: state => state.direction
     })
   },
   methods: {
-    ...clubsMapper.mapActions(["setClubs"]),
+    ...clubsMapper.mapActions(["setClubs", "setSort"]),
     async fetchClubsList(
       this: any,
       limit: number = this.clubsLimit,
@@ -90,7 +106,12 @@ export default Vue.extend({
     },
     clubLink(id: number) {
       return { name: "clubs-club", params: { id } };
+    },
+    async handleCreateClub() {
+      this.isCreatedNewClub = true;
+
+      await this.fetchClubsList();
     }
-  },
+  }
 });
 </script>

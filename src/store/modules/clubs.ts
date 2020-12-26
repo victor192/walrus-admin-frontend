@@ -6,13 +6,15 @@ import {
   Module
 } from "vuex-smart-module";
 import { Clubs } from "@/api";
-import { ClubData, ClubsListFilter } from "../interfaces/clubs";
+import { ClubData, ClubsListFilter, ClubsListSort } from "../interfaces/clubs";
 
 class ClubsState {
   list: ClubData[] = [];
   total = 0;
   limit = 50;
   offset = 0;
+  sort = "name";
+  direction = "desc";
 }
 
 class ClubsGetters extends Getters<ClubsState> {
@@ -25,6 +27,12 @@ class ClubsMutations extends Mutations<ClubsState> {
   SET_CLUBS_ITEMS(items: any[]) {
     this.state.list = items;
   }
+
+  SET_CLUBS_SORT(data: any) {
+    this.state.sort = data.sort || "name";
+    this.state.direction = data.direction || "desc";
+  }
+
   SET_CLUBS_CONTEXT(context: any) {
     this.state.total = context.total || 0;
     this.state.limit = context.limit || 50;
@@ -40,9 +48,15 @@ export class ClubsActions extends Actions<
   async setClubs(payload: ClubsListFilter): Promise<boolean> {
     const limit = payload.limit || this.state.limit;
     const offset = payload.offset || this.state.offset;
+    const { sort, direction } = this.state;
 
     try {
-      const { status, data } = await Clubs.getList(limit, offset);
+      const { status, data } = await Clubs.getList(
+        limit,
+        offset,
+        sort,
+        direction
+      );
 
       if (status === 200) {
         const { data: clubs, total, limit, offset } = data;
@@ -59,6 +73,10 @@ export class ClubsActions extends Actions<
 
       return Promise.reject(false);
     }
+  }
+
+  setSort(payload: ClubsListSort) {
+    this.commit("SET_CLUBS_SORT", payload);
   }
 }
 
