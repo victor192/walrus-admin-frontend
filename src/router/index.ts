@@ -52,6 +52,26 @@ const routes: Array<RouteConfig> = [
         }
       }
     ]
+  },
+  {
+    path: "/members",
+    name: "members",
+    component: () =>
+      import(/* webpackChunkName: "members" */ "../views/Members/Main.vue"),
+    redirect: "/members/list",
+    children: [
+      {
+        path: "/members/list",
+        name: "members-list",
+        component: () =>
+          import(
+            /* webpackChunkName: "members-list" */ "../views/Members/List.vue"
+          ),
+        meta: {
+          title: "Список участников"
+        }
+      }
+    ]
   }
 ];
 
