@@ -82,7 +82,7 @@ export default Vue.extend({
       try {
         const response = await Promise.all([
           Clubs.getClub(id),
-          Members.getList(-1, 0, "first_name", "desc", Number(id))
+          Members.getList(-1, 0, "last_name", "desc", Number(id))
         ]);
 
         const { status: clubStatus, data: clubData } = response[0];

@@ -77,7 +77,9 @@ export default Vue.extend({
     this.$root.$on("onCreatedNewClub", this.handleCreateClub);
   },
   computed: {
-    ...clubsMapper.mapGetters(["isClubs"]),
+    ...clubsMapper.mapGetters({
+      isClubs: "isListNotEmpty"
+    }),
     ...clubsMapper.mapState({
       clubsList: state => state.list,
       clubsLimit: state => state.limit,

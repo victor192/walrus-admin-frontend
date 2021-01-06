@@ -1,51 +1,25 @@
-import {
-  createMapper,
-  Getters,
-  Mutations,
-  Actions,
-  Module
-} from "vuex-smart-module";
+import { createMapper, Module } from "vuex-smart-module";
 import { Clubs } from "@/api";
-import { ClubData, ClubsListFilter, ClubsListSort } from "../interfaces/clubs";
+import {
+  BaseListState,
+  BaseListGetters,
+  BaseListMutations,
+  BaseListActions
+} from "./base-list";
+import { ClubData } from "../interfaces/clubs";
+import { BaseListFilter } from "../interfaces/base-list";
 
-class ClubsState {
-  list: ClubData[] = [];
-  total = 0;
-  limit = 50;
-  offset = 0;
+class ClubsState extends BaseListState<ClubData> {
   sort = "name";
   direction = "desc";
 }
 
-class ClubsGetters extends Getters<ClubsState> {
-  get isClubs() {
-    return this.state.list.length > 0;
-  }
-}
+class ClubsGetters extends BaseListGetters<ClubData> {}
 
-class ClubsMutations extends Mutations<ClubsState> {
-  SET_CLUBS_ITEMS(items: any[]) {
-    this.state.list = items;
-  }
+class ClubsMutations extends BaseListMutations<ClubData> {}
 
-  SET_CLUBS_SORT(data: any) {
-    this.state.sort = data.sort || "name";
-    this.state.direction = data.direction || "desc";
-  }
-
-  SET_CLUBS_CONTEXT(context: any) {
-    this.state.total = context.total || 0;
-    this.state.limit = context.limit || 50;
-    this.state.offset = context.offset || 0;
-  }
-}
-
-export class ClubsActions extends Actions<
-  ClubsState,
-  ClubsGetters,
-  ClubsMutations
-> {
-  async setClubs(payload: ClubsListFilter): Promise<boolean> {
+export class ClubsActions extends BaseListActions<ClubData> {
+  async setClubs(payload: BaseListFilter): Promise<boolean> {
     const limit = payload.limit || this.state.limit;
     const offset = payload.offset || this.state.offset;
     const { sort, direction } = this.state;
@@ -61,8 +35,8 @@ export class ClubsActions extends Actions<
       if (status === 200) {
         const { data: clubs, total, limit, offset } = data;
 
-        this.commit("SET_CLUBS_ITEMS", clubs);
-        this.commit("SET_CLUBS_CONTEXT", { total, limit, offset });
+        this.commit("SET_ITEMS", clubs);
+        this.commit("SET_CONTEXT", { total, limit, offset });
 
         return Promise.resolve(true);
       }
@@ -73,10 +47,6 @@ export class ClubsActions extends Actions<
 
       return Promise.reject(false);
     }
-  }
-
-  setSort(payload: ClubsListSort) {
-    this.commit("SET_CLUBS_SORT", payload);
   }
 }
 
