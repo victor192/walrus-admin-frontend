@@ -6,7 +6,8 @@ const getList = async (
   offset = 0,
   sort = "first_name",
   direction = "desc",
-  club_id: null | number = null
+  club_id: number | null = null,
+  gender: string | null = null
 ) => {
   return await request(
     {
@@ -17,8 +18,19 @@ const getList = async (
         offset,
         sort,
         direction,
-        club_id
+        club_id,
+        gender
       }
+    },
+    true
+  );
+};
+
+const getMember = async (id: string) => {
+  return await request(
+    {
+      url: `/members/${id}`,
+      method: "GET"
     },
     true
   );
@@ -37,5 +49,6 @@ const createMember = async (data: CreateMemberDTO) => {
 
 export default {
   getList,
+  getMember,
   createMember
 };

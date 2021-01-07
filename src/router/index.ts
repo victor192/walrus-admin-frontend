@@ -70,6 +70,18 @@ const routes: Array<RouteConfig> = [
         meta: {
           title: "Список участников"
         }
+      },
+      {
+        path: "/members/:id",
+        name: "members-member",
+        component: () =>
+          import(
+            /* webpackChunkName: "members-member" */ "../views/Members/Member.vue"
+          ),
+        meta: {
+          title: "Информация об участнике",
+          backLink: true
+        }
       }
     ]
   }

@@ -8,22 +8,39 @@
       :items-per-page="membersLimit"
     >
       <template #top>
-        <div class="d-flex">
-          <v-select
-            :items="clubs"
-            label="Клуб"
-            item-text="name"
-            item-value="id"
-            solo
-          >
-            <template #item="{ item }">
-              <div class="d-flex flex-column text-left my-2">
-                <span class="font-weight-bold">{{ item.name }}</span>
-                <span>{{ item.location }}</span>
-              </div>
-            </template>
-          </v-select>
-        </div>
+        <v-row>
+          <v-col cols="4">
+            <v-select
+              v-model="clubId"
+              :items="clubs"
+              label="Клуб"
+              item-text="name"
+              item-value="id"
+              @change="() => fetchMembersList()"
+              clearable
+              solo
+            >
+              <template #item="{ item }">
+                <div class="d-flex flex-column text-left my-2">
+                  <span class="font-weight-bold">{{ item.name }}</span>
+                  <span>{{ item.location }}</span>
+                </div>
+              </template>
+            </v-select>
+          </v-col>
+          <v-col cols="2">
+            <v-select
+              v-model="gender"
+              :items="genders"
+              label="Пол"
+              item-text="text"
+              item-value="value"
+              @change="() => fetchMembersList()"
+              clearable
+              solo
+            />
+          </v-col>
+        </v-row>
       </template>
       <template #item.last_name="{ item }">
         <router-link :to="memberLink(item.id)">
@@ -71,6 +88,18 @@ export default Vue.extend({
       isLoading: true,
       isFetchError: false,
       clubs: [],
+      genders: [
+        {
+          text: "Мужчина",
+          value: "male"
+        },
+        {
+          text: "Женщина",
+          value: "female"
+        }
+      ],
+      gender: null,
+      clubId: null,
       membersOptions: {},
       membersHeaders: [
         {
@@ -150,7 +179,12 @@ export default Vue.extend({
       this.isFetchError = false;
 
       try {
-        await this.setMembers({ limit, offset });
+        await this.setMembers({
+          limit,
+          offset,
+          club_id: this.clubId,
+          gender: this.gender
+        });
 
         const { status: clubsStatus, data: clubsData } = await Clubs.getList(
           -1

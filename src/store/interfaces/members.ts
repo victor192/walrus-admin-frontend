@@ -9,4 +9,5 @@ export interface MemberData {
 
 export interface MembersFilter extends BaseListFilter {
   club_id?: number;
+  gender?: string;
 }

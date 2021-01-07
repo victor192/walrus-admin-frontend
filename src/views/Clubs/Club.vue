@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" :loading="isLoading">
+  <div class="d-flex flex-column">
     <v-card :loading="isLoading" class="mb-4">
       <v-simple-table>
         <tbody>
@@ -35,7 +35,13 @@
             <tr v-for="member in members" :key="member.id">
               <td>
                 <router-link :to="memberLink(member.id)">
-                  {{ getFullName(member.last_name, member.first_name, member.middle_name) }}
+                  {{
+                    getFullName(
+                      member.last_name,
+                      member.first_name,
+                      member.middle_name
+                    )
+                  }}
                 </router-link>
               </td>
               <td class="text-center">
@@ -45,17 +51,29 @@
                 {{ getAgeFromBirthdate(member.birthdate) }}
               </td>
             </tr>
+            <tr v-if="isEmptymembers">
+              <td colspan="3" class="text-center">
+                Участников в клубе нет
+              </td>
+            </tr>
           </tbody>
         </template>
       </v-simple-table>
     </v-card>
+    <v-snackbar v-model="isFetchError">
+      Ошибка при загрузке данных клуба
+    </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import { Clubs, Members } from "@/api";
-import { getFullName, getGenderName, getAgeFromBirthdate } from "@/utils/filters";
+import {
+  getFullName,
+  getGenderName,
+  getAgeFromBirthdate
+} from "@/utils/filters";
 
 export default Vue.extend({
   name: "ClubsClub",
@@ -67,6 +85,11 @@ export default Vue.extend({
       isLoading: true,
       isFetchError: false
     };
+  },
+  computed: {
+    isEmptymembers(this: any) {
+      return this.members.length === 0;
+    }
   },
   mounted() {
     this.fetchClub(this.$route.params.id);

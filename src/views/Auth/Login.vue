@@ -79,7 +79,7 @@ export default Vue.extend({
 
         try {
           await this.authLogin({ email, password });
-          await this.$router.push("/");
+          await this.$router.push("/clubs");
         } catch (error) {
           console.log(error);
 
