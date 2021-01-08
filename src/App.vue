@@ -1,28 +1,26 @@
 <template>
-  <div id="app">
-    <v-app>
-      <sidebar/>
-      <navbar/>
-      <v-main>
-        <v-container fluid>
-          <router-view></router-view>
-        </v-container>
-      </v-main>
-    </v-app>
-  </div>
+  <v-app>
+    <sidebar />
+    <navbar />
+    <v-main>
+      <v-container class="text-left" fluid>
+        <router-view/>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  import Sidebar from "@/components/Sidebar.vue";
-  import Navbar from "@/components/Navbar.vue";
+import Vue from "vue";
+import Sidebar from "@/components/Sidebar.vue";
+import Navbar from "@/components/Navbar.vue";
 
-  export default Vue.extend({
-    components: {
-      Sidebar,
-      Navbar
-    }
-  })
+export default Vue.extend({
+  components: {
+    Sidebar,
+    Navbar
+  }
+});
 </script>
 
 <style lang="scss">
