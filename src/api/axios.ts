@@ -1,10 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
-import { BASE_URL } from "@/config/api";
+import { API_URL } from "@/config/api";
 import store from "@/store";
 import qs from "qs";
 
 const axiosService: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_URL,
   timeout: 10000
 });
 
