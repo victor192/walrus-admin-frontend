@@ -5,7 +5,7 @@ import {
   Module,
   createMapper
 } from "vuex-smart-module";
-import { AuthCredentialsRequestDTO } from "@/api/dto/auth";
+import { AuthCredentialsRequestDTO } from "@/api/dto/auth-credentials-request.dto";
 import AuthService from "@/services/auth";
 
 class AuthState {

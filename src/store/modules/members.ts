@@ -1,6 +1,7 @@
 import { createMapper, Module } from "vuex-smart-module";
 import { Members } from "@/api";
-import { MemberData, MembersFilter } from "../interfaces/members";
+import { MemberData } from "../interfaces/member-data.interface";
+import { MembersFilter } from "../interfaces/members-filter-interface";
 import {
   BaseListActions,
   BaseListGetters,
@@ -23,6 +24,7 @@ class MembersActions extends BaseListActions<MemberData> {
     const offset = payload.offset || this.state.offset;
     const club_id = payload.club_id || null;
     const gender = payload.gender || null;
+    const search = payload.search || null;
     const { sort, direction } = this.state;
 
     try {
@@ -32,7 +34,8 @@ class MembersActions extends BaseListActions<MemberData> {
         sort,
         direction,
         club_id,
-        gender
+        gender,
+        search
       );
 
       if (status === 200) {

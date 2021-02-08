@@ -1,5 +1,5 @@
 import { request } from "../axios";
-import { CreateClubDTO } from "../dto/clubs";
+import { CreateClubDTO } from "../dto/create-club.dto";
 
 const getList = async (
   limit = 50,

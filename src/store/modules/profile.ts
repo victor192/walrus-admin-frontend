@@ -5,7 +5,7 @@ import {
   Module,
   createMapper
 } from "vuex-smart-module";
-import { ProfileData } from "../interfaces/profile";
+import { ProfileData } from "../interfaces/profile-data.interface";
 import { Users } from "@/api";
 
 class ProfileState {

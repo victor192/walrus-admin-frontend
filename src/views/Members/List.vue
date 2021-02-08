@@ -40,6 +40,15 @@
               solo
             />
           </v-col>
+          <v-col cols="6">
+            <v-text-field
+              :loading="isLoading"
+              v-model="memberQuery"
+              placeholder="Поиск участника"
+              @change="searchMember"
+              solo
+            />
+          </v-col>
         </v-row>
       </template>
       <template #item.last_name="{ item }">
@@ -99,6 +108,7 @@ export default Vue.extend({
         }
       ],
       gender: null,
+      memberQuery: "",
       clubId: null,
       membersOptions: {},
       membersHeaders: [
@@ -173,7 +183,8 @@ export default Vue.extend({
     async fetchMembersList(
       this: any,
       limit: number = this.membersLimit,
-      offset: number = this.membersOffset
+      offset: number = this.membersOffset,
+      search: string | null = null
     ) {
       this.isLoading = true;
       this.isFetchError = false;
@@ -183,7 +194,8 @@ export default Vue.extend({
           limit,
           offset,
           club_id: this.clubId,
-          gender: this.gender
+          gender: this.gender,
+          search
         });
 
         const { status: clubsStatus, data: clubsData } = await Clubs.getList(
@@ -214,6 +226,15 @@ export default Vue.extend({
       this.isCreatedNewMember = true;
 
       await this.fetchMembersList();
+    },
+    async searchMember(query: string) {
+      const search = query.length ? query : null;
+
+      await this.fetchMembersList(
+        this.membersLimit,
+        this.membersOffset,
+        search
+      );
     }
   }
 });

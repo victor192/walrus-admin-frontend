@@ -1,5 +1,5 @@
 import { Actions, Getters, Mutations } from "vuex-smart-module";
-import { BaseListSort } from "../interfaces/base-list";
+import { BaseListSort } from "../interfaces/base-list-sort.interface";
 
 export class BaseListState<T> {
   list: T[] = [];

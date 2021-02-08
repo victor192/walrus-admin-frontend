@@ -1,5 +1,5 @@
 import { request } from "../axios";
-import { CreateMemberDTO } from "../dto/members";
+import { CreateMemberDTO } from "../dto/create-member.dto";
 
 const getList = async (
   limit = 50,
@@ -7,7 +7,8 @@ const getList = async (
   sort = "first_name",
   direction = "desc",
   club_id: number | null = null,
-  gender: string | null = null
+  gender: string | null = null,
+  search: string | null = null
 ) => {
   return await request(
     {
@@ -19,7 +20,8 @@ const getList = async (
         sort,
         direction,
         club_id,
-        gender
+        gender,
+        search
       }
     },
     true

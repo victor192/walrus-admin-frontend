@@ -6,8 +6,8 @@ import {
   BaseListMutations,
   BaseListActions
 } from "./base-list";
-import { ClubData } from "../interfaces/clubs";
-import { BaseListFilter } from "../interfaces/base-list";
+import { ClubData } from "../interfaces/club-data.interface";
+import { BaseListFilter } from "../interfaces/base-list-filter.interface";
 
 class ClubsState extends BaseListState<ClubData> {
   sort = "name";

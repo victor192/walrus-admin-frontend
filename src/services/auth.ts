@@ -1,6 +1,6 @@
 import { Auth } from "@/api";
 import { TOKEN_KEY_NAME } from "@/config/auth";
-import { AuthCredentialsRequestDTO } from "@/api/dto/auth";
+import { AuthCredentialsRequestDTO } from "@/api/dto/auth-credentials-request.dto";
 
 class AuthService {
   setToken(tokenType: string, tokenValue: string): string {
