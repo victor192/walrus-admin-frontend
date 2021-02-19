@@ -9,7 +9,7 @@
     >
       <template #top>
         <v-row>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-select
               v-model="clubId"
               :items="clubs"
@@ -40,7 +40,19 @@
               solo
             />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="3">
+            <v-select
+              v-model="ageFilter"
+              :items="ageGroups"
+              label="Возрастная группа"
+              item-text="text"
+              item-value="value"
+              @change="() => fetchMembersList()"
+              clearable
+              solo
+            />
+          </v-col>
+          <v-col cols="4">
             <v-text-field
               :loading="isLoading"
               v-model="memberQuery"
@@ -63,9 +75,6 @@
       </template>
       <template #item.gender="{ item }">
         {{ getGenderName(item.gender) }}
-      </template>
-      <template #item.birthdate="{ item }">
-        {{ getAgeFromBirthdate(item.birthdate) }}
       </template>
     </v-data-table>
     <create-member :clubs="clubs" />
@@ -108,6 +117,40 @@ export default Vue.extend({
         }
       ],
       gender: null,
+      ageGroups: [
+        {
+          text: "До 18 лет",
+          value: {
+            min_age: null,
+            max_age: 17
+          }
+        },
+        {
+          text: "18 - 39 лет",
+          value: {
+            min_age: 18,
+            max_age: 39
+          }
+        },
+        {
+          text: "40 - 55 лет",
+          value: {
+            min_age: 40,
+            max_age: 55
+          }
+        },
+        {
+          text: "56 лет и старше",
+          value: {
+            min_age: 56,
+            max_age: null
+          }
+        }
+      ],
+      ageFilter: {
+        min_age: null,
+        max_age: null
+      },
       memberQuery: "",
       clubId: null,
       membersOptions: {},
@@ -130,7 +173,7 @@ export default Vue.extend({
         {
           text: "Возраст",
           sortable: true,
-          value: "birthdate"
+          value: "age"
         }
       ],
       isCreatedNewMember: false,
@@ -195,6 +238,7 @@ export default Vue.extend({
           offset,
           club_id: this.clubId,
           gender: this.gender,
+          ...this.ageFilter,
           search
         });
 

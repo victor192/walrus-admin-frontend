@@ -8,6 +8,8 @@ const getList = async (
   direction = "desc",
   club_id: number | null = null,
   gender: string | null = null,
+  min_age: number | null = null,
+  max_age: number | null = null,
   search: string | null = null
 ) => {
   return await request(
@@ -21,6 +23,8 @@ const getList = async (
         direction,
         club_id,
         gender,
+        min_age,
+        max_age,
         search
       }
     },

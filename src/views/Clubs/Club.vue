@@ -48,7 +48,7 @@
                 {{ getGenderName(member.gender) }}
               </td>
               <td class="text-center">
-                {{ getAgeFromBirthdate(member.birthdate) }}
+                {{ member.age }}
               </td>
             </tr>
             <tr v-if="isEmptymembers">
@@ -72,7 +72,6 @@ import { Clubs, Members } from "@/api";
 import {
   getFullName,
   getGenderName,
-  getAgeFromBirthdate
 } from "@/utils/filters";
 
 export default Vue.extend({
@@ -97,7 +96,6 @@ export default Vue.extend({
   methods: {
     getFullName,
     getGenderName,
-    getAgeFromBirthdate,
     async fetchClub(id: string) {
       this.isLoading = true;
       this.isFetchError = false;

@@ -64,11 +64,12 @@ export default Vue.extend({
           validate: () => boolean;
         }).validate()
       ) {
+        const payload = {
+          name: this.name,
+          location: this.location
+        };
+
         try {
-          const payload = {
-            name: this.name,
-            location: this.location
-          };
           const { status, data } = await Clubs.createClub(payload);
 
           if (status === 200) {

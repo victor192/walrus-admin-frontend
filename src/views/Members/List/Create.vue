@@ -154,18 +154,18 @@ export default Vue.extend({
           validate: () => boolean;
         }).validate()
       ) {
-        try {
-          const payload = {
-            first_name: this.firstName,
-            last_name: this.lastName,
-            ...(this.middleName && { middle_name: this.middleName }),
-            birthdate: new Date(String(this.birthdate)),
-            gender: this.gender,
-            club_id: Number(this.club),
-            ...(this.email && { email: this.email }),
-            ...(this.phone && { phone: this.phone })
-          };
+        const payload = {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          ...(this.middleName && { middle_name: this.middleName }),
+          birthdate: new Date(String(this.birthdate)),
+          gender: this.gender,
+          club_id: Number(this.club),
+          ...(this.email && { email: this.email }),
+          ...(this.phone && { phone: this.phone })
+        };
 
+        try {
           const { status, data } = await Members.createMember(payload);
 
           if (status === 200) {

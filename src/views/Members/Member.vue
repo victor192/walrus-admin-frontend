@@ -68,6 +68,7 @@ export default Vue.extend({
       },
       gender: "male",
       birthdate: "",
+      age: null,
       email: null,
       phone: null,
       isLoading: true,
@@ -77,9 +78,6 @@ export default Vue.extend({
   computed: {
     clubLink(this: any) {
       return { name: "clubs-club", params: { id: this.club.id } };
-    },
-    age(this: any) {
-      return this.birthdate ? getAgeFromBirthdate(this.birthdate) : "";
     }
   },
   mounted() {
@@ -104,6 +102,7 @@ export default Vue.extend({
           this.club.name = member.club_name;
           this.gender = member.gender;
           this.birthdate = member.birthdate;
+          this.age = member.age
           this.email = member.email;
           this.phone = member.phone;
           this.isLoading = false;

@@ -24,6 +24,8 @@ class MembersActions extends BaseListActions<MemberData> {
     const offset = payload.offset || this.state.offset;
     const club_id = payload.club_id || null;
     const gender = payload.gender || null;
+    const min_age = payload.min_age || null;
+    const max_age = payload.max_age || null;
     const search = payload.search || null;
     const { sort, direction } = this.state;
 
@@ -35,6 +37,8 @@ class MembersActions extends BaseListActions<MemberData> {
         direction,
         club_id,
         gender,
+        min_age,
+        max_age,
         search
       );
 
