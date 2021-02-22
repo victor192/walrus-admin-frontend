@@ -48,7 +48,7 @@
                 {{ getGenderName(member.gender) }}
               </td>
               <td class="text-center">
-                {{ member.age }}
+                {{ getAgeFromBirthdate(member.birthdate) }}
               </td>
             </tr>
             <tr v-if="isEmptymembers">
@@ -68,10 +68,11 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Clubs, Members } from "@/api";
+import { Clubs } from "@/api";
 import {
   getFullName,
   getGenderName,
+  getAgeFromBirthdate
 } from "@/utils/filters";
 
 export default Vue.extend({
@@ -96,23 +97,17 @@ export default Vue.extend({
   methods: {
     getFullName,
     getGenderName,
+    getAgeFromBirthdate,
     async fetchClub(id: string) {
       this.isLoading = true;
       this.isFetchError = false;
 
       try {
-        const response = await Promise.all([
-          Clubs.getClub(id),
-          Members.getList(-1, 0, "last_name", "desc", Number(id))
-        ]);
+        const { status, data } = await Clubs.getClub(id);
 
-        const { status: clubStatus, data: clubData } = response[0];
-        const { status: membersStatus, data: membersData } = response[1];
-
-        if (clubStatus === 200 && membersStatus === 200) {
-          const { data: club } = clubData;
-          const { data: members } = membersData;
-          const { name, location } = club;
+        if (status === 200) {
+          const { data: club } = data;
+          const { name, location, members } = club;
 
           this.name = name;
           this.location = location;

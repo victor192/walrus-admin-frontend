@@ -24,12 +24,14 @@
             v-model="name"
             :rules="nameRules"
             label="Название клуба"
+            filled
             required
           />
           <v-text-field
             v-model="location"
             :rules="nameRules"
             label="Расположение клуба"
+            filled
             required
           />
           <v-btn :disabled="!valid" color="success" @click="createClub">
@@ -57,6 +59,13 @@ export default Vue.extend({
       showAlert: false
     };
   },
+  watch: {
+    dialog(val: boolean) {
+      if (!val) {
+        this.clearForm();
+      }
+    }
+  },
   methods: {
     async createClub() {
       if (
@@ -83,6 +92,13 @@ export default Vue.extend({
           this.showAlert = true;
         }
       }
+    },
+    clearForm() {
+      this.name = "";
+      this.location = "";
+      (this.$refs.createClubForm as Vue & {
+        resetValidation: () => void;
+      }).resetValidation();
     }
   }
 });

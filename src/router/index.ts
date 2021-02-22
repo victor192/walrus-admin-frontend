@@ -7,6 +7,11 @@ Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
+    path: "/",
+    name: "home",
+    redirect: "/clubs/list"
+  },
+  {
     path: "/auth",
     name: "auth",
     component: () =>
@@ -80,6 +85,38 @@ const routes: Array<RouteConfig> = [
           ),
         meta: {
           title: "Информация об участнике",
+          backLink: true
+        }
+      }
+    ]
+  },
+  {
+    path: "/orders",
+    name: "orders",
+    component: () =>
+      import(/* webpackChunkName: "orders" */ "../views/Orders/Main.vue"),
+    redirect: "/orders/list",
+    children: [
+      {
+        path: "/orders/list",
+        name: "orders-list",
+        component: () =>
+          import(
+            /* webpackChunkName: "orders-list" */ "../views/Orders/List.vue"
+          ),
+        meta: {
+          title: "Список заявок на участие в соревнованиях"
+        }
+      },
+      {
+        path: "/orders/:id",
+        name: "orders-order",
+        component: () =>
+          import(
+            /* webpackChunkName: "orders-order" */ "../views/Orders/Order.vue"
+          ),
+        meta: {
+          title: "Информация о заявке",
           backLink: true
         }
       }

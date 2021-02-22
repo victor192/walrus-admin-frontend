@@ -1,5 +1,6 @@
 <template>
   <v-app-bar app>
+    <v-app-bar-nav-icon @click.stop="$emit('change', !drawer)"></v-app-bar-nav-icon>
     <v-toolbar-title>Система управления соревнованиями</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-menu offset-y>
@@ -26,6 +27,13 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "Navbar",
+  model: {
+    prop: "drawer",
+    event: "change"
+  },
+  props: {
+    drawer: Boolean
+  },
   computed: {
     profileName() {
       return this.$store.getters["profile/name"].substring(0, 2).toUpperCase();

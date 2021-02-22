@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <sidebar />
-    <navbar />
+    <sidebar v-model="drawer" />
+    <navbar v-model="drawer" />
     <v-main>
       <v-container class="text-left" fluid>
-        <router-view/>
+        <router-view />
       </v-container>
     </v-main>
   </v-app>
@@ -19,6 +19,11 @@ export default Vue.extend({
   components: {
     Sidebar,
     Navbar
+  },
+  data() {
+    return {
+      drawer: true
+    };
   }
 });
 </script>

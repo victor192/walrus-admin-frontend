@@ -5,6 +5,7 @@ import { auth } from "./modules/auth";
 import { profile } from "./modules/profile";
 import { clubs } from "./modules/clubs";
 import { members } from "./modules/members";
+import { orders } from "./modules/orders";
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ const root = new Module({
     auth,
     profile,
     clubs,
-    members
+    members,
+    orders
   }
 });
 

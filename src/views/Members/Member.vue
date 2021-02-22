@@ -1,6 +1,9 @@
 <template>
   <div class="d-flex flex-column">
     <v-card :loading="isLoading" class="mb-4">
+      <v-chip v-if="isParaSwimmer" class="ma-2" color="primary" label>
+        Участник является параплавцом
+      </v-chip>
       <v-simple-table>
         <tbody>
           <tr>
@@ -25,13 +28,15 @@
             <td>Пол</td>
             <td class="font-weight-bold">{{ getGenderName(gender) }}</td>
           </tr>
-          <tr>
+          <tr v-if="birthdate">
             <td>День рождения</td>
             <td class="font-weight-bold">{{ birthdate }}</td>
           </tr>
-          <tr>
+          <tr v-if="birthdate">
             <td>Возраст</td>
-            <td class="font-weight-bold">{{ age }}</td>
+            <td class="font-weight-bold">
+              {{ getAgeFromBirthdate(birthdate) }}
+            </td>
           </tr>
           <tr v-if="email">
             <td>E-mail</td>
@@ -40,6 +45,10 @@
           <tr v-if="phone">
             <td>Телефон</td>
             <td class="font-weight-bold">{{ phone }}</td>
+          </tr>
+          <tr v-if="location">
+            <td>Город</td>
+            <td class="font-weight-bold">{{ location }}</td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -67,10 +76,11 @@ export default Vue.extend({
         name: ""
       },
       gender: "male",
-      birthdate: "",
-      age: null,
+      isParaSwimmer: false,
+      birthdate: null,
       email: null,
       phone: null,
+      location: null,
       isLoading: true,
       isFetchError: false
     };
@@ -85,6 +95,7 @@ export default Vue.extend({
   },
   methods: {
     getGenderName,
+    getAgeFromBirthdate,
     async fetchMember(id: string) {
       this.isLoading = true;
       this.isFetchError = false;
@@ -98,13 +109,14 @@ export default Vue.extend({
           this.firstName = member.first_name;
           this.lastName = member.last_name;
           this.middleName = member.middle_name;
-          this.club.id = member.club_id;
-          this.club.name = member.club_name;
+          this.club.id = member.club.id;
+          this.club.name = member.club.name;
           this.gender = member.gender;
+          this.isParaSwimmer = member.para_swimmer;
           this.birthdate = member.birthdate;
-          this.age = member.age
           this.email = member.email;
           this.phone = member.phone;
+          this.location = member.location;
           this.isLoading = false;
         }
       } catch (error) {

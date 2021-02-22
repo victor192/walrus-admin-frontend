@@ -1,4 +1,4 @@
-export interface MemberData {
+export interface OrderData {
   id: number;
   first_name: string;
   last_name: string;
@@ -6,9 +6,8 @@ export interface MemberData {
   birthdate: string;
   gender: string;
   para_swimmer: string;
-  club_id: number;
-  club_name: string;
-  email?: string;
-  phone?: string;
-  location?: string;
+  races_count: number;
+  relays_count: number;
+  cryatlons_count: number;
+  status: string;
 }

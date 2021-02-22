@@ -4,7 +4,9 @@ export interface CreateMemberDTO {
   middle_name?: string;
   birthdate: Date;
   gender: string;
+  para_swimmer: boolean;
   club_id: number;
   phone?: string;
   email?: string;
+  location?: string;
 }

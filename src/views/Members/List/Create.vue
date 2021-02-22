@@ -24,15 +24,17 @@
             v-model="lastName"
             :rules="lastNameRules"
             label="Фамилия"
+            filled
             required
           />
           <v-text-field
             v-model="firstName"
             :rules="lastNameRules"
             label="Имя"
+            filled
             required
           />
-          <v-text-field v-model="middleName" label="Отчество" />
+          <v-text-field v-model="middleName" label="Отчество" filled />
           <v-select
             v-model="club"
             :items="clubs"
@@ -40,6 +42,7 @@
             label="Клуб"
             item-text="name"
             item-value="id"
+            filled
             required
           >
             <template #item="{ item }">
@@ -49,7 +52,7 @@
               </div>
             </template>
           </v-select>
-          <v-radio-group v-model="gender" row>
+          <v-radio-group v-model="gender" class="my-0" row>
             <v-radio label="Мужчина" value="male"></v-radio>
             <v-radio label="Женщина" value="female"></v-radio>
           </v-radio-group>
@@ -63,9 +66,10 @@
                 v-model="birthdate"
                 :rules="birthdateRules"
                 label="День рождения"
-                prepend-icon="mdi-calendar"
+                prepend-inner-icon="mdi-calendar"
                 v-bind="attrs"
                 v-on="on"
+                filled
                 readonly
                 required
               ></v-text-field>
@@ -75,16 +79,25 @@
               @change="birthdateMenu = false"
             ></v-date-picker>
           </v-menu>
+          <v-checkbox
+            v-model="isParaSwimmer"
+            label="Участник - парапловец"
+            class="my-0"
+            required
+          ></v-checkbox>
           <v-text-field
             v-model="email"
             :rules="emailRules"
             label="E-mail"
+            filled
           ></v-text-field>
           <v-text-field
             v-model="phone"
             :rules="phoneRules"
             label="Телефон"
+            filled
           ></v-text-field>
+          <v-text-field v-model="location" label="Город" filled></v-text-field>
           <v-btn :disabled="!valid" color="success" @click="createMember">
             Создать
           </v-btn>
@@ -119,6 +132,7 @@ export default Vue.extend({
         (v: number | null) => v !== null || "Необходимо указать клуб участника!"
       ],
       gender: "male",
+      isParaSwimmer: false,
       birthdate: null,
       birthdateMenu: false,
       birthdateRules: [
@@ -144,8 +158,16 @@ export default Vue.extend({
             : true;
         }
       ],
+      location: "",
       showAlert: false
     };
+  },
+  watch: {
+    dialog(val: boolean) {
+      if (!val) {
+        this.clearForm();
+      }
+    }
   },
   methods: {
     async createMember() {
@@ -160,9 +182,11 @@ export default Vue.extend({
           ...(this.middleName && { middle_name: this.middleName }),
           birthdate: new Date(String(this.birthdate)),
           gender: this.gender,
+          para_swimmer: this.isParaSwimmer,
           club_id: Number(this.club),
           ...(this.email && { email: this.email }),
-          ...(this.phone && { phone: this.phone })
+          ...(this.phone && { phone: this.phone }),
+          ...(this.location && { location: this.location })
         };
 
         try {
@@ -179,6 +203,21 @@ export default Vue.extend({
           this.showAlert = true;
         }
       }
+    },
+    clearForm() {
+      this.lastName = "";
+      this.firstName = "";
+      this.middleName = "";
+      this.club = null;
+      this.gender = "male";
+      this.isParaSwimmer = false;
+      this.birthdate = null;
+      this.email = "";
+      this.phone = "";
+      this.location = "";
+      (this.$refs.createMemberForm as Vue & {
+        resetValidation: () => void;
+      }).resetValidation();
     }
   }
 });

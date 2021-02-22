@@ -76,6 +76,9 @@
       <template #item.gender="{ item }">
         {{ getGenderName(item.gender) }}
       </template>
+      <template #item.age="{ item }">
+        {{ getAgeFromBirthdate(item.birthdate) }}
+      </template>
     </v-data-table>
     <create-member :clubs="clubs" />
     <v-snackbar v-model="isCreatedNewMember" color="green">
@@ -94,6 +97,7 @@ import {
 } from "@/utils/filters";
 import CreateMember from "./List/Create.vue";
 import { Clubs } from "@/api";
+import { ClubData } from "@/store/interfaces/club-data.interface";
 
 export default Vue.extend({
   name: "MembersList",
@@ -105,7 +109,7 @@ export default Vue.extend({
       currentPage: 1,
       isLoading: true,
       isFetchError: false,
-      clubs: [],
+      clubs: [] as ClubData[],
       genders: [
         {
           text: "Мужчина",
@@ -167,7 +171,7 @@ export default Vue.extend({
         },
         {
           text: "Пол",
-          sortable: false,
+          sortable: true,
           value: "gender"
         },
         {

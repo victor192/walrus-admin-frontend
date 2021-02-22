@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer width="300px" app>
+  <v-navigation-drawer v-model="drawer" width="300px" app>
     <v-list>
       <v-list-item class="px-2">
         <v-list-item-avatar width="100%" height="100%">
@@ -7,13 +7,23 @@
         </v-list-item-avatar>
       </v-list-item>
       <v-list-item>
-        <v-list-group prepend-icon="mdi-account-multiple-outline">
+        <v-list-group prepend-icon="mdi-account-multiple-outline" :value="true">
           <template #activator>
             <v-list-item-title>Клубы моржей</v-list-item-title>
           </template>
           <v-list-item to="/clubs/list" link>Список клубов</v-list-item>
           <v-list-item to="/members/list" link>Участники</v-list-item>
         </v-list-group>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item to="/orders/list" link>
+          <v-list-item-icon>
+            <v-icon>mdi-bookmark-outline</v-icon>
+          </v-list-item-icon>
+          <v-list-item-content class="text-left">
+            <v-list-item-title>Заявки на участие</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
@@ -23,6 +33,26 @@
 import Vue from "vue";
 
 export default Vue.extend({
-  name: "Sidebar"
+  model: {
+    prop: "value",
+    event: "change"
+  },
+  props: {
+    value: Boolean
+  },
+  name: "Sidebar",
+  data() {
+    return {
+      drawer: this.value
+    };
+  },
+  watch: {
+    drawer(val: boolean) {
+      this.$emit("change", val);
+    },
+    value(val: boolean) {
+      this.drawer = val;
+    }
+  }
 });
 </script>
